@@ -43,7 +43,7 @@ TUnionSet(t_union, variant, value)
 ## Example usage:
 
 ```c
-#include "tagged_unions.h"
+#include "tagged_union.h"
 #include <stdio.h>
 
 typedef tagged_union(test, (
