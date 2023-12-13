@@ -20,7 +20,7 @@ tagged_union_from_enum(name, enumtype, pairs)
 /// Like tagged_union, but it uses a given enum type as the backing enum.
 ```
 ```c
-TUnionGet(t_union, variant, type)
+TUnionGet(t_union, variant)
 /// Gets the value in the tagged union. If it's an inactive field, an error is 
 /// issued and the program exits.
 ```
@@ -28,7 +28,6 @@ TUnionGet(t_union, variant, type)
 TUnionLit(variant, literal)
 /// Expands to a compound literal of a tagged union. Use this instead of 
 /// manually writing out compound literals to avoid silly mistakes.
-/// literals to avoid silly mistakes.
 ```
 ```c
 TUnionActive(t_union)
@@ -56,7 +55,7 @@ typedef tagged_union(test, (
 
 int main(void) {
 	test a = TUnionLit(THING3, 5.5);
-	printf("%f\n", TUnionGet(a, THING3, float));
+	printf("%f\n", TUnionGet(a, THING3));
 }
 ```
 

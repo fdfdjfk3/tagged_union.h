@@ -67,14 +67,17 @@
 		}; \
 	}
 
-void *_t_union_check_error(const char *file, int line) {
+static void t_union_check_error(const char *file, int line) {
 	printf("%s:%d: Tagged union safety error: attempted to access inactive field.\n", file, line);
 	exit(EXIT_FAILURE);
 }
 
 /// Gets the value in the tagged union. If it's an inactive field, an error is 
 /// issued and the program exits.
-#define TUnionGet(t_union, variant, type) ((t_union.active == variant) ? t_union.variant : *(type *)_t_union_check_error(__FILE__, __LINE__))
+#define TUnionGet(t_union, variant) \
+	(((t_union).active == variant) \
+		? (t_union).variant \
+		: (t_union_check_error(__FILE__, __LINE__), (t_union).variant))
 
 /// Expands to a compound literal of a tagged union. Use this instead of 
 /// manually writing out compound literals to avoid silly mistakes.
@@ -82,12 +85,12 @@ void *_t_union_check_error(const char *file, int line) {
 #define TUnionLit(variant, literal) {.active = variant, .variant = literal}
 
 /// Expands to the active field enum
-#define TUnionActive(t_union) t_union.active
+#define TUnionActive(t_union) (t_union).active
 
 /// Modifies the current variant's value. If the variant is different
 /// than the one stored, it will be an error.
 #define TUnionSet(t_union, variant, value) \
-	if (t_union.active != variant) { \
+	if ((t_union).active != variant) { \
 		_t_union_check_error(__FILE__, __LINE__) \
 	} \
-	t_union.variant = value;
+	(t_union).variant = value;
