@@ -91,6 +91,6 @@ static void t_union_check_error(const char *file, int line) {
 /// than the one stored, it will be an error.
 #define TUnionSet(t_union, variant, value) \
 	if ((t_union).active != variant) { \
-		_t_union_check_error(__FILE__, __LINE__) \
+		t_union_check_error(__FILE__, __LINE__) \
 	} \
 	(t_union).variant = value;
